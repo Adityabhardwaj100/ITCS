@@ -1,0 +1,1767 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="ITCS — Innovation Through Technology. We transform ambitious ideas into powerful digital solutions — from enterprise software to AI-driven data intelligence." />
+  <title>ITCS — Innovation Through Technology</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       DESIGN TOKENS — DARK (default)
+    ============================================================ */
+    :root {
+      --bg: #000000;
+      --surface: #111111;
+      --surface2: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #f5f5f7;
+      --muted: #a1a1a6;
+      --accent: #0071e3;
+      --accent-lt: #2997ff;
+      --radius-card: 20px;
+      --radius-pill: 980px;
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", Arial, sans-serif;
+      --transition: 0.25s ease;
+      /* navbar frosted glass */
+      --nav-bg: rgba(0, 0, 0, 0.85);
+      --nav-border: rgba(255, 255, 255, 0.08);
+      /* gradient text colours */
+      --grad-start: #ffffff;
+      --grad-end: #a1a1a6;
+    }
+
+    /* ============================================================
+       DESIGN TOKENS — LIGHT
+    ============================================================ */
+    [data-theme="light"] {
+      --bg: #ffffff;
+      --surface: #f5f5f7;
+      --surface2: #e8e8ed;
+      --border: #d2d2d7;
+      --text: #1d1d1f;
+      --muted: #6e6e73;
+      --nav-bg: rgba(255, 255, 255, 0.85);
+      --nav-border: rgba(0, 0, 0, 0.10);
+      --grad-start: #1d1d1f;
+      --grad-end: #6e6e73;
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    /* ============================================================
+       UTILITIES
+    ============================================================ */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin-inline: auto;
+      padding-inline: clamp(1.25rem, 5vw, 3rem);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--grad-start) 40%, var(--grad-end) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-text-blue {
+      background: linear-gradient(135deg, var(--accent-lt) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    #navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      transition: background var(--transition), backdrop-filter var(--transition), border-color var(--transition);
+      border-bottom: 1px solid transparent;
+    }
+
+    #navbar.scrolled {
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom-color: var(--nav-border);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      gap: 1rem;
+    }
+
+    .nav-logo {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+
+    .nav-logo span {
+      color: var(--accent-lt);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.25rem;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 450;
+      color: var(--muted);
+      transition: color var(--transition);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    /* ---------- THEME TOGGLE ---------- */
+    .theme-toggle {
+      position: relative;
+      width: 56px;
+      height: 30px;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .tt-track {
+      display: block;
+      width: 56px;
+      height: 30px;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-pill);
+      position: relative;
+      transition: background 0.35s ease, border-color 0.35s ease;
+    }
+
+    [data-theme="light"] .tt-track {
+      background: #e0f0ff;
+      border-color: #b3d4f5;
+    }
+
+    .tt-thumb {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      line-height: 1;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.35s ease;
+      box-shadow: 0 2px 8px rgba(0, 113, 227, 0.5);
+      user-select: none;
+    }
+
+    [data-theme="light"] .tt-thumb {
+      transform: translateX(26px);
+      background: #f59e0b;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.5);
+    }
+
+    .tt-icon {
+      display: inline-block;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .theme-toggle.spinning .tt-icon {
+      animation: iconSpin 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes iconSpin {
+      0% {
+        transform: rotate(0deg) scale(1);
+      }
+
+      40% {
+        transform: rotate(200deg) scale(1.3);
+      }
+
+      100% {
+        transform: rotate(360deg) scale(1);
+      }
+    }
+
+    /* ---------- GET STARTED CTA ---------- */
+    .nav-cta {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #fff;
+      background: var(--accent);
+      padding: 0.5rem 1.25rem;
+      border-radius: var(--radius-pill);
+      transition: background var(--transition), transform var(--transition);
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent-lt);
+      transform: scale(1.03);
+    }
+
+    /* hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 0.25rem;
+      background: none;
+      border: none;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    /* mobile menu */
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+    }
+
+    .mobile-menu a {
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      transition: color var(--transition);
+    }
+
+    .mobile-menu a:hover {
+      color: var(--text);
+    }
+
+    .mobile-menu .nav-cta {
+      margin: 1rem 1.5rem;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .mobile-menu .mobile-theme-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      padding-block: 8rem 5rem;
+    }
+
+    .hero-glow {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 65% at 50% 30%,
+          rgba(0, 113, 227, 0.18) 0%,
+          rgba(0, 113, 227, 0.06) 50%,
+          transparent 80%);
+      pointer-events: none;
+    }
+
+    .hero-glow::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 300px;
+      background: linear-gradient(to bottom, transparent, var(--bg));
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin-inline: auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--accent-lt);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid rgba(41, 151, 255, 0.4);
+      background: rgba(41, 151, 255, 0.08);
+      padding: 0.35rem 1rem;
+      border-radius: var(--radius-pill);
+      margin-bottom: 1.75rem;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-lt);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(0.75);
+      }
+    }
+
+    .hero-headline {
+      font-size: clamp(2.75rem, 7vw, 5.25rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      color: var(--muted);
+      max-width: 600px;
+      margin-inline: auto;
+      line-height: 1.65;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.7rem 1.75rem;
+      border-radius: var(--radius-pill);
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-lt);
+      transform: scale(1.04);
+      box-shadow: 0 0 30px rgba(0, 113, 227, 0.5);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--accent-lt);
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.68rem 1.75rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(41, 151, 255, 0.5);
+      transition: border-color var(--transition), background var(--transition), transform var(--transition);
+      cursor: pointer;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent-lt);
+      background: rgba(41, 151, 255, 0.07);
+      transform: scale(1.04);
+    }
+
+    /* ============================================================
+       STATS BAR
+    ============================================================ */
+    #stats {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .stat-item {
+      padding: 2.5rem 1rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .stat-item+.stat-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 20%;
+      height: 60%;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .stat-number {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-label {
+      font-size: 0.825rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    /* ============================================================
+       SECTION SHARED
+    ============================================================ */
+    .section {
+      padding-block: clamp(4rem, 8vw, 7rem);
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 640px;
+      margin-inline: auto;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-lt);
+      margin-bottom: 0.85rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.9rem, 4vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       SERVICES
+    ============================================================ */
+    #services {
+      background: var(--bg);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 1.75rem;
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-card);
+      opacity: 0;
+      transition: opacity var(--transition);
+      background: radial-gradient(ellipse 60% 60% at 50% 0%, rgba(0, 113, 227, 0.08), transparent);
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(41, 151, 255, 0.45);
+      box-shadow: 0 20px 60px rgba(0, 113, 227, 0.12), 0 0 0 1px rgba(41, 151, 255, 0.12);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .icon-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .badge-blue {
+      background: linear-gradient(135deg, #0a3d8a, #0071e3);
+    }
+
+    .badge-green {
+      background: linear-gradient(135deg, #064e3b, #059669);
+    }
+
+    .badge-orange {
+      background: linear-gradient(135deg, #7c2d12, #ea580c);
+    }
+
+    .badge-purple {
+      background: linear-gradient(135deg, #4c1d95, #7c3aed);
+    }
+
+    .badge-red {
+      background: linear-gradient(135deg, #7f1d1d, #dc2626);
+    }
+
+    .badge-teal {
+      background: linear-gradient(135deg, #134e4a, #0d9488);
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.55rem;
+      letter-spacing: -0.01em;
+    }
+
+    .card-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ============================================================
+       WHY ITCS
+    ============================================================ */
+    #why {
+      background: var(--surface);
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    .why-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 2.25rem;
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+
+    .why-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(41, 151, 255, 0.45);
+      box-shadow: 0 20px 60px rgba(0, 113, 227, 0.1), 0 0 0 1px rgba(41, 151, 255, 0.1);
+    }
+
+    .why-number {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .why-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+
+    .why-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       ABOUT
+    ============================================================ */
+    #about {
+      background: var(--bg);
+      padding-block: clamp(4rem, 7vw, 6rem);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .about-stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .about-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 1.5rem;
+      transition: transform var(--transition), border-color var(--transition), background var(--transition);
+    }
+
+    .about-stat:hover {
+      transform: translateY(-3px);
+      border-color: rgba(41, 151, 255, 0.35);
+    }
+
+    .about-stat-num {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent-lt);
+      margin-bottom: 0.35rem;
+    }
+
+    .about-stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================================
+       CTA BAND
+    ============================================================ */
+    #cta-band {
+      background: var(--bg);
+      padding-block: clamp(4rem, 7vw, 6rem);
+      position: relative;
+    }
+
+    #cta-band::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      max-width: 600px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(41, 151, 255, 0.6), transparent);
+    }
+
+    .cta-inner {
+      text-align: center;
+      max-width: 640px;
+      margin-inline: auto;
+    }
+
+    .cta-headline {
+      font-size: clamp(2rem, 4.5vw, 3.25rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .cta-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    #footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding-block: 4rem 2rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-brand .nav-logo {
+      font-size: 1.5rem;
+      margin-bottom: 0.85rem;
+      display: block;
+    }
+
+    .footer-brand p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 280px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 0.55rem;
+    }
+
+    .footer-col ul li a {
+      font-size: 0.875rem;
+      color: var(--muted);
+      transition: color var(--transition);
+    }
+
+    .footer-col ul li a:hover {
+      color: var(--text);
+    }
+
+    .footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-bar p {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 0.65rem;
+    }
+
+    .social-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      transition: background var(--transition), border-color var(--transition), color var(--transition), transform var(--transition);
+    }
+
+    .social-icon:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* ============================================================
+       LOGO BANNER
+    ============================================================ */
+    #logo-banner {
+      width: 100%;
+      height: 100px;
+      background: #ffffff;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #e5e5e5;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    #logo-banner::before,
+    #logo-banner::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 80px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    #logo-banner::before {
+      left: 0;
+      background: linear-gradient(to right, #ffffff, transparent);
+    }
+
+    #logo-banner::after {
+      right: 0;
+      background: linear-gradient(to left, #ffffff, transparent);
+    }
+
+    .logo-track {
+      display: flex;
+      align-items: center;
+      width: max-content;
+      animation: logo-scroll 50s linear infinite;
+    }
+
+    .logo-track.paused {
+      animation-play-state: paused;
+    }
+
+    @keyframes logo-scroll {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-33.3334%);
+      }
+    }
+
+    .logo-item {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 48px;
+      height: 100px;
+      flex-shrink: 0;
+    }
+
+    .logo-item img {
+      height: 50px;
+      width: auto;
+      max-width: 140px;
+      object-fit: contain;
+      filter: grayscale(100%) opacity(65%);
+      transition: filter 0.3s ease;
+      display: block;
+    }
+
+    .logo-item:hover img {
+      filter: grayscale(0%) opacity(100%);
+    }
+
+    .logo-text {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.2;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+
+    .logo-text .lt-main {
+      font-family: var(--font);
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: #000;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .logo-text .lt-sub {
+      font-family: var(--font);
+      font-weight: 500;
+      font-size: 0.55rem;
+      color: #333;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+
+    .logo-item:hover .logo-text {
+      opacity: 1;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1024px) {
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+
+      .nav-links,
+      .nav-right {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .mobile-menu.open {
+        display: flex;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stat-item:nth-child(3)::before {
+        display: none;
+      }
+
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+
+      #logo-banner {
+        height: 80px;
+      }
+
+      .logo-item {
+        height: 80px;
+        padding: 0 32px;
+      }
+
+      .logo-item img {
+        height: 38px;
+        max-width: 110px;
+      }
+
+      .logo-text .lt-main {
+        font-size: 1.05rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-brand {
+        grid-column: auto;
+      }
+    }
+
+    /* ============================================================
+       SCROLL REVEAL (CSS scroll-driven, progressive enhancement)
+    ============================================================ */
+    @supports (animation-timeline: scroll()) {
+
+      .card,
+      .why-card,
+      .stat-item,
+      .about-stat {
+        animation: fadeUp linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 25%;
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    }
+
+    /* ============================================================
+       TRUSTED PARTNERS SECTION
+    ============================================================ */
+    #trusted-partners {
+      background: var(--bg);
+      padding: 60px 0 0;
+      /* zero bottom padding — connects flush into logo banner */
+    }
+
+    .tp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      padding-inline: clamp(1.25rem, 5vw, 3rem);
+      max-width: 1200px;
+      margin-inline: auto;
+      padding-bottom: 40px;
+    }
+
+    /* LEFT: heading + body */
+    .tp-heading {
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      margin-bottom: 1.1rem;
+    }
+
+    .tp-body {
+      font-size: clamp(1rem, 1.5vw, 1.0625rem);
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 480px;
+    }
+
+    /* RIGHT: stats */
+    .tp-right {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tp-stat {
+      padding: 1.5rem 0;
+    }
+
+    .tp-stat+.tp-stat {
+      border-top: 1px solid var(--border);
+    }
+
+    .tp-stat-num {
+      font-size: clamp(2.5rem, 4vw, 3.25rem);
+      font-weight: 700;
+      color: var(--accent-lt);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .tp-stat-desc {
+      font-size: 0.9375rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .tp-footnote {
+      font-style: italic;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 1.25rem;
+      opacity: 0.75;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .tp-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding-bottom: 32px;
+      }
+
+      #trusted-partners {
+        padding-top: 40px;
+      }
+
+      /* Stats side-by-side on mobile */
+      .tp-right {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 1.5rem;
+      }
+
+      .tp-stat+.tp-stat {
+        border-top: none;
+        border-left: 1px solid var(--border);
+        padding-left: 1.5rem;
+      }
+
+      .tp-footnote {
+        grid-column: 1 / -1;
+        margin-top: 0.75rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <nav id="navbar" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">IT<span>CS</span></a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#why">Why ITCS</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#footer">Contact</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <!-- Theme toggle -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme" title="Toggle light / dark mode">
+          <span class="tt-track">
+            <span class="tt-thumb">
+              <span class="tt-icon" id="themeIcon">☀️</span>
+            </span>
+          </span>
+        </button>
+
+        <span class="nav-cta" onclick="document.getElementById('footer').scrollIntoView({behavior:'smooth'})">Get
+          Started</span>
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu" role="menu">
+      <div class="mobile-theme-row">
+        <span>Theme:</span>
+        <button class="theme-toggle" id="themeToggleMobile" aria-label="Toggle color theme"
+          style="width:48px;height:26px;">
+          <span class="tt-track" style="width:48px;height:26px;">
+            <span class="tt-thumb" style="width:20px;height:20px;">
+              <span class="tt-icon" id="themeIconMobile">☀️</span>
+            </span>
+          </span>
+        </button>
+      </div>
+      <a href="#services" role="menuitem">Services</a>
+      <a href="#why" role="menuitem">Why ITCS</a>
+      <a href="#about" role="menuitem">About Us</a>
+      <a href="#footer" role="menuitem">Contact</a>
+      <span class="nav-cta" onclick="document.getElementById('footer').scrollIntoView({behavior:'smooth'})"
+        style="margin:1rem 1.5rem;display:inline-block;text-align:center;cursor:pointer;" role="menuitem">Get
+        Started</span>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section id="hero" aria-label="Hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="container hero-content">
+      <div class="eyebrow" role="doc-subtitle">Next-Gen Technology Solutions</div>
+      <h1 class="hero-headline gradient-text">Innovation Through<br>Technology.</h1>
+      <p class="hero-sub">
+        We transform ambitious ideas into powerful digital solutions — from
+        enterprise software to AI-driven data intelligence.
+      </p>
+      <div class="hero-actions">
+        <span class="btn-primary"
+          onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Explore Services</span>
+        <span class="btn-ghost" onclick="document.getElementById('footer').scrollIntoView({behavior:'smooth'})">Talk to
+          Us</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       STATS BAR
+  ============================================================ -->
+  <section id="stats" aria-label="Company stats">
+    <div class="container">
+      <div class="stats-grid" role="list">
+        <div class="stat-item" role="listitem">
+          <div class="stat-number gradient-text-blue">639+</div>
+          <div class="stat-label">Happy Clients</div>
+        </div>
+        <div class="stat-item" role="listitem">
+          <div class="stat-number gradient-text-blue">58</div>
+          <div class="stat-label">Design Awards</div>
+        </div>
+        <div class="stat-item" role="listitem">
+          <div class="stat-number gradient-text-blue">36</div>
+          <div class="stat-label">Designers</div>
+        </div>
+        <div class="stat-item" role="listitem">
+          <div class="stat-number gradient-text-blue">42</div>
+          <div class="stat-label">Developers</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TRUSTED PARTNERS
+  ============================================================ -->
+  <section id="trusted-partners" aria-labelledby="tp-heading">
+    <div class="tp-grid">
+
+      <!-- LEFT: text -->
+      <div class="tp-left">
+        <h2 class="tp-heading" id="tp-heading">Our trusted partners</h2>
+        <p class="tp-body">
+          We work with a carefully curated network of industry leaders and tech
+          visionaries to help you unlock your full potential. We combine our deep
+          expertise in design, engineering and AI with cutting-edge solutions from
+          our partner network to bring your ambitions to life.
+        </p>
+      </div>
+
+      <!-- RIGHT: stats -->
+      <div class="tp-right">
+
+        <div class="tp-stat">
+          <div class="tp-stat-num">95%</div>
+          <p class="tp-stat-desc">rate their experience with ITCS 8/10 or above*</p>
+        </div>
+
+        <div class="tp-stat">
+          <div class="tp-stat-num">700+</div>
+          <p class="tp-stat-desc">certifications across partner solutions and services</p>
+        </div>
+
+        <p class="tp-footnote">* This stat refers to the experience of working with ITCS and a partner</p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       LOGO / PARTNERS BANNER
+  ============================================================ -->
+  <div id="logo-banner" aria-label="Our technology partners" role="region">
+    <div class="logo-track" id="logoTrack">
+
+      <!-- ── SET 1 ──────────────────────────────────────────────── -->
+      <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg"
+          alt="AWS Partner Network" loading="lazy" /></div>
+      <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Google-cloud-platform.svg"
+          alt="Google Cloud Premier Partner" loading="lazy" /></div>
+      <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg"
+          alt="Microsoft Solutions Partner" loading="lazy" /></div>
+      <div class="logo-item"><span class="logo-text"><span class="lt-main">CAST</span></span></div>
+      <div class="logo-item"><span class="logo-text"><span class="lt-main">CYN</span><span
+            class="lt-sub">ConnectingYouNow</span></span></div>
+      <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Databricks_Logo.png"
+          alt="Databricks" loading="lazy" /></div>
+      <div class="logo-item"><span class="logo-text"><span class="lt-main">DX</span></span></div>
+      <div class="logo-item"><span class="logo-text"><span class="lt-main"
+            style="font-size:0.9rem;letter-spacing:0.05em;">MECHANICAL ORCHARD</span></span></div>
+      <div class="logo-item"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify"
+          loading="lazy" /></div>
+      <div class="logo-item"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" alt="Stripe"
+          loading="lazy" /></div>
+      <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Snowflake_Logo.svg"
+          alt="Snowflake" loading="lazy" /></div>
+
+      <!-- ── SET 2 ──────────────────────────────────────────────── -->
+      <div class="logo-item" aria-hidden="true"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt=""
+          loading="lazy" /></div>
+      <div class="logo-item" aria-hidden="true"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/0/01/Google-cloud-platform.svg" alt="" loading="lazy" />
+      </div>
+      <div class="logo-item" aria-hidden="true"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="" loading="lazy" /></div>
+      <div class="logo-item" aria-hidden="true"><span class="logo-text"><span class="lt-main">CAST</span></span></div>
+      <div class="logo-item" aria-hidden="true"><span class="logo-text"><span class="lt-main">CYN</span><span
+            class="lt-sub">ConnectingYouNow</span></span></div>
+      <div class="logo-item" aria-hidden="true"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/6/63/Databricks_Logo.png" alt="" loading="lazy" /></div>
+      <div class="logo-item" aria-hidden="true"><span class="logo-text"><span class="lt-main">DX</span></span></div>
+      <div class="logo-item" aria-hidden="true"><span class="logo-text"><span class="lt-main"
+            style="font-size:0.9rem;letter-spacing:0.05em;">MECHANICAL ORCHARD</span></span></div>
+      <div class="logo-item" aria-hidden="true"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt=""
+          loading="lazy" /></div>
+      <div class="logo-item" aria-hidden="true"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" alt=""
+          loading="lazy" /></div>
+      <div class="logo-item" aria-hidden="true"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Snowflake_Logo.svg" alt="" loading="lazy" /></div>
+
+      <!-- ── SET 3 ──────────────────────────────────────────────── -->
+      <div class="logo-item" aria-hidden="true"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt=""
+          loading="lazy" /></div>
+      <div class="logo-item" aria-hidden="true"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/0/01/Google-cloud-platform.svg" alt="" loading="lazy" />
+      </div>
+      <div class="logo-item" aria-hidden="true"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="" loading="lazy" /></div>
+      <div class="logo-item" aria-hidden="true"><span class="logo-text"><span class="lt-main">CAST</span></span></div>
+      <div class="logo-item" aria-hidden="true"><span class="logo-text"><span class="lt-main">CYN</span><span
+            class="lt-sub">ConnectingYouNow</span></span></div>
+      <div class="logo-item" aria-hidden="true"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/6/63/Databricks_Logo.png" alt="" loading="lazy" /></div>
+      <div class="logo-item" aria-hidden="true"><span class="logo-text"><span class="lt-main">DX</span></span></div>
+      <div class="logo-item" aria-hidden="true"><span class="logo-text"><span class="lt-main"
+            style="font-size:0.9rem;letter-spacing:0.05em;">MECHANICAL ORCHARD</span></span></div>
+      <div class="logo-item" aria-hidden="true"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt=""
+          loading="lazy" /></div>
+      <div class="logo-item" aria-hidden="true"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" alt=""
+          loading="lazy" /></div>
+      <div class="logo-item" aria-hidden="true"><img
+          src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Snowflake_Logo.svg" alt="" loading="lazy" /></div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SERVICES
+  ============================================================ -->
+  <section id="services" class="section" aria-labelledby="services-title">
+    <div class="container">
+      <header class="section-header">
+        <span class="section-label">What We Do</span>
+        <h2 class="section-title gradient-text" id="services-title">Our Services</h2>
+        <p class="section-sub">End-to-end technology services that power growth, efficiency, and innovation across
+          industries.</p>
+      </header>
+
+      <div class="services-grid">
+
+        <article class="card">
+          <div class="icon-badge badge-blue" aria-hidden="true">💻</div>
+          <h3 class="card-title">Software Development</h3>
+          <p class="card-desc">Custom web and enterprise software — scalable, performant, and built for your unique
+            business logic.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon-badge badge-green" aria-hidden="true">📊</div>
+          <h3 class="card-title">Data Analytics</h3>
+          <p class="card-desc">Turn raw data into strategic intelligence with real-time dashboards, ML models, and
+            forecasting tools.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon-badge badge-orange" aria-hidden="true">🤝</div>
+          <h3 class="card-title">Resource Fulfilment</h3>
+          <p class="card-desc">Pre-vetted tech talent deployed fast — engineers, designers, and PMs matched to your
+            project needs.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon-badge badge-purple" aria-hidden="true">🔬</div>
+          <h3 class="card-title">IT Consultancy</h3>
+          <p class="card-desc">Strategic tech advisory, infrastructure audits, and digital transformation roadmaps for
+            your business.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon-badge badge-red" aria-hidden="true">⚙️</div>
+          <h3 class="card-title">Technical Requirement</h3>
+          <p class="card-desc">Translating business vision into precise technical specs, system architectures, and
+            actionable blueprints.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon-badge badge-teal" aria-hidden="true">☁️</div>
+          <h3 class="card-title">DevOps &amp; Cloud Managed Services</h3>
+          <p class="card-desc">Automated CI/CD pipelines, secure cloud infrastructure, and 24/7 monitoring — we design
+            and manage the backbone that keeps your applications fast, stable, and ready to scale.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       WHY ITCS
+  ============================================================ -->
+  <section id="why" class="section" aria-labelledby="why-title">
+    <div class="container">
+      <header class="section-header">
+        <span class="section-label">Why Choose Us</span>
+        <h2 class="section-title gradient-text" id="why-title">Built Different.</h2>
+        <p class="section-sub">We combine deep technical expertise with a genuine commitment to your success.</p>
+      </header>
+
+      <div class="why-grid">
+        <article class="why-card">
+          <div class="why-number">01</div>
+          <h3 class="why-title">Innovative Approach</h3>
+          <p class="why-desc">We don't follow trends — we set them. Our team constantly explores emerging technologies
+            to give your product a lasting edge in a competitive landscape.</p>
+        </article>
+
+        <article class="why-card">
+          <div class="why-number">02</div>
+          <h3 class="why-title">Tailored Solutions</h3>
+          <p class="why-desc">No cookie-cutter templates. Every solution is architected from scratch around your goals,
+            your users, and your industry nuances.</p>
+        </article>
+
+        <article class="why-card">
+          <div class="why-number">03</div>
+          <h3 class="why-title">Dedicated Support</h3>
+          <p class="why-desc">A dedicated team that's in your corner — from ideation to launch and beyond, with
+            proactive communication at every milestone.</p>
+        </article>
+
+        <article class="why-card">
+          <div class="why-number">04</div>
+          <h3 class="why-title">Proven Track Record</h3>
+          <p class="why-desc">639+ clients served, 58 design awards, and a portfolio spanning fintech, health-tech, and
+            enterprise — our results speak for themselves.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ABOUT
+  ============================================================ -->
+  <section id="about" class="section" aria-labelledby="about-title">
+    <div class="container">
+      <div class="about-grid">
+        <div>
+          <span class="section-label">About ITCS</span>
+          <h2 class="section-title gradient-text" id="about-title" style="margin-bottom:1rem;">We Turn Ideas<br>Into
+            Reality.</h2>
+          <p style="font-size:1rem;color:var(--muted);line-height:1.75;margin-bottom:1.5rem;">
+            At ITCS, we believe that technology should be a launchpad, not a barrier. Our multidisciplinary teams of
+            engineers, data scientists, and designers work in lockstep with you to craft solutions that are both
+            visionary and pragmatic.
+          </p>
+          <p style="font-size:1rem;color:var(--muted);line-height:1.75;">
+            From early-stage startups to global enterprises, we bring the same level of craft and commitment to every
+            engagement — turning ambitious ideas into robust, scalable reality.
+          </p>
+        </div>
+        <div class="about-stat-grid">
+          <div class="about-stat">
+            <div class="about-stat-num">10+</div>
+            <div class="about-stat-label">Years of Excellence</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat-num">639+</div>
+            <div class="about-stat-label">Happy Clients</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat-num">78</div>
+            <div class="about-stat-label">Team Members</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat-num">58</div>
+            <div class="about-stat-label">Design Awards</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CTA BAND
+  ============================================================ -->
+  <section id="cta-band" aria-label="Call to action">
+    <div class="container">
+      <div class="cta-inner">
+        <h2 class="cta-headline gradient-text">Ready to Build<br>Something Great?</h2>
+        <p class="cta-sub">Let's discuss your project and craft a solution that moves your business forward.</p>
+        <span class="btn-primary" onclick="document.getElementById('footer').scrollIntoView({behavior:'smooth'})"
+          style="display:inline-block;cursor:pointer;">Get in Touch</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer id="footer" aria-label="Site footer">
+    <div class="container">
+      <div class="footer-grid">
+
+        <!-- Brand -->
+        <div class="footer-brand">
+          <span class="nav-logo">IT<span>CS</span></span>
+          <p>At ITCS, we turn ideas into reality with cutting-edge technology and innovative solutions — building the
+            future, one product at a time.</p>
+        </div>
+
+        <!-- Services -->
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul role="list">
+            <li><a href="#services">Software Development</a></li>
+            <li><a href="#services">Data Analytics</a></li>
+            <li><a href="#services">Resource Fulfilment</a></li>
+            <li><a href="#services">IT Consultancy</a></li>
+            <li><a href="#services">Technical Requirement</a></li>
+            <li><a href="#services">DevOps &amp; Cloud</a></li>
+          </ul>
+        </div>
+
+        <!-- Company -->
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul role="list">
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#why">Why ITCS</a></li>
+            <li><a href="#footer">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Social -->
+        <div class="footer-col">
+          <h4>Follow Us</h4>
+          <ul role="list">
+            <li><a href="https://www.linkedin.com/company/itcs-in" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://twitter.com/itcs_in" target="_blank" rel="noopener">Twitter / X</a></li>
+            <li><a href="https://www.instagram.com/itcs.in" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="https://www.facebook.com/itcs.in" target="_blank" rel="noopener">Facebook</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bar">
+        <p>© 2024 ITCS — Innovation Through Technology. All rights reserved.</p>
+        <div class="social-icons" aria-label="Social media links">
+          <a href="https://www.linkedin.com/company/itcs-in" class="social-icon" target="_blank" rel="noopener"
+            aria-label="LinkedIn">in</a>
+          <a href="https://twitter.com/itcs_in" class="social-icon" target="_blank" rel="noopener"
+            aria-label="Twitter">𝕏</a>
+          <a href="https://www.instagram.com/itcs.in" class="social-icon" target="_blank" rel="noopener"
+            aria-label="Instagram">ig</a>
+          <a href="https://www.facebook.com/itcs.in" class="social-icon" target="_blank" rel="noopener"
+            aria-label="Facebook">fb</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    /* ----- Theme toggle ----- */
+    const html = document.documentElement;
+    const toggleBtn = document.getElementById('themeToggle');
+    const toggleBtnMob = document.getElementById('themeToggleMobile');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeIconMob = document.getElementById('themeIconMobile');
+
+    function setTheme(theme, animate) {
+      html.setAttribute('data-theme', theme);
+      const icon = theme === 'dark' ? '☀️' : '🌙';
+      themeIcon.textContent = icon;
+      themeIconMob.textContent = icon;
+      localStorage.setItem('itcs-theme', theme);
+
+      if (animate) {
+        [toggleBtn, toggleBtnMob].forEach(btn => {
+          btn.classList.remove('spinning');
+          // Reflow to restart animation
+          void btn.offsetWidth;
+          btn.classList.add('spinning');
+          // Clean up after animation
+          setTimeout(() => btn.classList.remove('spinning'), 500);
+        });
+      }
+    }
+
+    function toggleTheme() {
+      const current = html.getAttribute('data-theme') || 'dark';
+      setTheme(current === 'dark' ? 'light' : 'dark', true);
+    }
+
+    toggleBtn.addEventListener('click', toggleTheme);
+    toggleBtnMob.addEventListener('click', toggleTheme);
+
+    // Init from saved preference (default: dark)
+    const saved = localStorage.getItem('itcs-theme') || 'dark';
+    setTheme(saved, false);
+
+    /* ----- Navbar scroll frosted glass ----- */
+    const navbar = document.getElementById('navbar');
+    const onScroll = () => navbar.classList.toggle('scrolled', window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    /* ----- Hamburger menu ----- */
+    const hamburgerBtn = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburgerBtn.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('open');
+      hamburgerBtn.setAttribute('aria-expanded', open);
+      const spans = hamburgerBtn.querySelectorAll('span');
+      if (open) {
+        spans[0].style.transform = 'translateY(7px) rotate(45deg)';
+        spans[1].style.opacity = '0';
+        spans[2].style.transform = 'translateY(-7px) rotate(-45deg)';
+      } else {
+        spans[0].style.transform = '';
+        spans[1].style.opacity = '';
+        spans[2].style.transform = '';
+      }
+    });
+
+    // Close on nav link click
+    mobileMenu.querySelectorAll('a, span[role="menuitem"]').forEach(el => {
+      el.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        hamburgerBtn.setAttribute('aria-expanded', false);
+        hamburgerBtn.querySelectorAll('span').forEach(s => {
+          s.style.transform = '';
+          s.style.opacity = '';
+        });
+      });
+    });
+
+    /* ----- Logo banner hover pause ----- */
+    const track = document.getElementById('logoTrack');
+    if (track) {
+      track.querySelectorAll('.logo-item').forEach(item => {
+        item.addEventListener('mouseenter', () => track.classList.add('paused'));
+        item.addEventListener('mouseleave', () => track.classList.remove('paused'));
+      });
+    }
+  </script>
+
+</body>
+
+</html>
